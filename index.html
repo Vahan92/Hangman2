@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+    <title>Document</title>
+</head>
+
+<body onload="Hangman.readFile()">
+    <div id="output" class="container">
+        <p id="loading"></p>
+        <p id="words"></p>
+        <p id="welcome"></p>
+        <p id="ammountOfLetters"></p>
+        <p id="message"></p>
+        <p id="letters"></p>
+        <p id="ammountOfGuesses"></p>
+        <p id="guess"></p>
+        <p id="warning"></p>
+        <button class="myButtons" onclick="Hangman.hangman()">start new Hangman</button>
+        <br/>
+        <br/>
+        <div>
+            <input type="text" id="txt" class="field" />
+            <button id="submit" class="myButtons" onclick="Hangman.checkingInputValue()" disabled>submit</button>
+        </div>
+        <br>
+        <button class="myButtons" onclick="Hangman.show_possible_matches()" disabled>get a hint</button>
+        <p id="hints"></p>
+    </div>
+    <script src="js/main.js"></script>
+</body>
+
+</html>

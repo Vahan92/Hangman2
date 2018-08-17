@@ -1,0 +1,38 @@
+.myButtons {  
+    border: 3px solid transparent;
+    border-image: linear-gradient(to right, #0865F1 0%, #C704F6 100%);
+    border-image-slice: 1;
+  
+    background: #fff;
+    color: #000;
+    font-size: 1em;
+    text-decoration: none;
+}
+
+.myButtons:hover {
+    background-color: white;
+    background: linear-gradient(to right, #0865F1, #C704F6);
+    color: #fff;
+    cursor: pointer;
+}
+
+.myButtons:disabled{
+    background-color: white;
+    background: linear-gradient(to right, rgb(74, 75, 77), rgb(75, 70, 77));
+    color: grey;
+    border-image: linear-gradient(to right, rgb(93, 95, 97) 0%, rgb(64, 61, 65) 100%);
+    cursor: not-allowed;
+}
+
+body{
+    text-align: center;
+}
+
+input{
+    width: 150px;
+    line-height: 20px;
+}
+
+input:focus {
+    border: 2px solid purple;
+}
