@@ -16,7 +16,6 @@ let Hangman = function () {
     function readFile() {
         $.get('words.txt', function (data) {
             arr = data.split(' ');
-            console.log(arr)
         });
     }
 
@@ -26,11 +25,10 @@ let Hangman = function () {
     hangman = () => {
         input = getId('txt');
         secretWord = chooseWord(arr);
-        console.log(secretWord);
         letters = getAvailableLetters();
         asterics = printAsterics(secretWord);
         getId("loading").textContent = `Loading word list from file...`;
-        getId("words").textContent = `55900 words loaded.`;
+        getId("words").textContent = `${arr.length} words loaded.`;
         getId("welcome").textContent = `Welcome to the game Hangman!`;
         getId("ammountOfLetters").textContent = `I am thinking of a word that is ${secretWord.length} letters long.`;
         getId("message").textContent = asterics;
@@ -63,17 +61,18 @@ let Hangman = function () {
         let inpVal = input.value;
         let forPoints = [...new Set(secretWord)].length;
         letters = getAvailableLetters(inpVal);
-        myWord = GetGuessedWord(secretWord, inpVal);
+        myWord = getGuessedWord(secretWord, inpVal);
         getId('letters').textContent = `Available letters: ${letters}`;
         getId("message").textContent = myWord;
         let checkIfWon = isWordGuessed(secretWord, myWord);
-        console.log('inpVal', inpVal);
         inpVal = '';
         gameOver(checkIfWon, forPoints);
     }
 
     /**
      * Prints the letters of alphabet which are left
+     * @param lettersGuessed is a string which is equal to users inserted value
+     * @return returns string of alphabet exept the letters which were already inserted by user
      */
     getAvailableLetters = (lettersGuessed) => {
         if (lettersGuessed !== undefined) {
@@ -97,16 +96,19 @@ let Hangman = function () {
                 result.push(element)
             }
         })
-        getId("hints").textContent = `POSSIBLE WORDS ARE: ${result}`;
+        getId("hints").textContent = `POSSIBLE WORDS ARE: ${result.join(' ')}`;
     }
 
     /**
      * finds the words that has same length and same guessed letters position in the 'guess word'
+     * @param myWord is the word which user tries to guess
+     * @param otherWord are the words from words.txt of the same length with MyWord
+     * @return returns true if myWord and otherWord has the same latters on the same position and false if not
      */
-    matchWithGaps = (myWord, other_word) => {
+    matchWithGaps = (myWord, otherWord) => {
         let sameChars = 0;
-        for (let i = 0, arrLength = other_word.length; i < arrLength; ++i) {
-            if (myWord[i] !== "*" && myWord[i] === other_word[i]) {
+        for (let i = 0, arrLength = otherWord.length; i < arrLength; ++i) {
+            if (myWord[i] !== "*" && myWord[i] === otherWord[i]) {
                 sameChars++;
             }
         }
@@ -118,14 +120,18 @@ let Hangman = function () {
 
     /**
      * Chooses random word from the array
+     * @param wordsArr is array of word from which will randomly be choosed a word
+     * @return returns a string of randomly choosed word;
      */
-    chooseWord = (x) => {
-        let guessRandomWord = x[Math.floor(Math.random() * x.length - 1)];
+    chooseWord = (wordsArr) => {
+        let guessRandomWord = wordsArr[Math.floor(Math.random() * wordsArr.length - 1)];
         return guessRandomWord;
     }
 
     /**
      * Prints the asterics
+     * @param secretWord is a string of word which must be guessed
+     * @return returns a string of asterics which are of the same lenght with secretWord
      */
     printAsterics = (secretWord) => {
         enableButtons();
@@ -138,21 +144,24 @@ let Hangman = function () {
 
     /**
      * Returns word with guessed letters
+     * @param secretWord is the word that must be guessed
+     * @param lettersGuessed is the letter inserted by the user
+     * @return returns string with asterics if the letter on that position wasn't guessed and the letters which were guessed
      */
-    GetGuessedWord = (secretWord, lettersGuessed) => {
-        let guessWordLength = secretWord.length, sum = 0, been = false;
+    getGuessedWord = (secretWord, lettersGuessed) => {
+        let guessWordLength = secretWord.length, sum = 0, isExist = false;
         for (let i = 0; i < guessWordLength; ++i) {
             if (lettersGuessed === secretWord[i]) {
                 chars = chars.substr(0, i) + lettersGuessed.toLowerCase() + chars.substr(i + 1);
                 sum = 0;
-                been = true;
+                isExist = true;
                 getId("guess").textContent = `Good Guess`;
                 matching++;
             } else {
                 sum = 1;
             }
         }
-        if (been == false) {
+        if (isExist === false) {
             ammountOfGuesses -= sum;
             getId("guess").textContent = `Oops! That letter is not in my word.`;
             getId("ammountOfGuesses").textContent = `you have ${ammountOfGuesses} guesses left`;
@@ -162,7 +171,9 @@ let Hangman = function () {
     }
 
     /**
-     * Checks if player wol or lost the game;
+     * Checks if player won or lost the game;
+     * @param checkIfWon is a boolean
+     * @param forPoints is the number of non repeating letters in the word
      */
     gameOver = (checkIfWon, forPoints) => {
         if (checkIfWon) {
@@ -186,6 +197,9 @@ let Hangman = function () {
 
     /**
      * Checks if word is guessed
+     * @param secretWord is the word which must be guessed
+     * @param lettersGuessed is the user attemption to guess the word
+     * @return returns boolean
      */    
     isWordGuessed = (secretWord, lettersGuessed) => {
         if (secretWord.localeCompare(lettersGuessed) === 0) {

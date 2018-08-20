@@ -16,7 +16,7 @@
     cursor: pointer;
 }
 
-.myButtons:disabled{
+.myButtons:disabled{ 
     background-color: white;
     background: linear-gradient(to right, rgb(74, 75, 77), rgb(75, 70, 77));
     color: grey;
@@ -24,11 +24,11 @@
     cursor: not-allowed;
 }
 
-body{
+body{ 
     text-align: center;
 }
 
-input{
+input {
     width: 150px;
     line-height: 20px;
 }
